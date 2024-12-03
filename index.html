@@ -120,31 +120,53 @@
     </div>
 
     <script>
-        let totalIncome = 0;
-        let totalExpense = 0;
+let totalIncome = 0;
+let totalExpense = 0;
 
-        function addIncome() {
-            const incomeInput = document.getElementById("income");
-            const incomeValue = parseFloat(incomeInput.value) || 0;
-            totalIncome += incomeValue;
-            document.getElementById("total-income").textContent = totalIncome.toFixed(2);
-            updateBalance();
-            incomeInput.value = '';
-        }
+function addIncome() {
+    const incomeInput = document.getElementById("income");
+    const incomeValue = parseFloat(incomeInput.value) || 0;
 
-        function addExpense() {
-            const expenseInput = document.getElementById("expense");
-            const expenseValue = parseFloat(expenseInput.value) || 0;
-            totalExpense += expenseValue;
-            document.getElementById("total-expense").textContent = totalExpense.toFixed(2);
-            updateBalance();
-            expenseInput.value = '';
-        }
+    if (incomeValue <= 0) {
+        alert("Please enter a valid income amount greater than 0.");
+        return;
+    }
 
-        function updateBalance() {
-            const balance = totalIncome - totalExpense;
-            document.getElementById("balance").textContent = balance.toFixed(2);
-        }
+    totalIncome += incomeValue;
+    document.getElementById("total-income").textContent = totalIncome.toFixed(2);
+    updateBalance();
+    incomeInput.value = '';
+}
+
+function addExpense() {
+    if (totalIncome === 0) {
+        alert("The income balance is too low. Please add income first.");
+        return;
+    }
+
+    const expenseInput = document.getElementById("expense");
+    const expenseValue = parseFloat(expenseInput.value) || 0;
+
+    if (expenseValue <= 0) {
+        alert("Please enter a valid expense amount greater than 0.");
+        return;
+    }
+
+    if (expenseValue > totalIncome - totalExpense) {
+        alert("Expense exceeds available balance. Please adjust the amount.");
+        return;
+    }
+
+    totalExpense += expenseValue;
+    document.getElementById("total-expense").textContent = totalExpense.toFixed(2);
+    updateBalance();
+    expenseInput.value = '';
+}
+
+function updateBalance() {
+    const balance = totalIncome - totalExpense;
+    document.getElementById("balance").textContent = balance.toFixed(2);
+}
     </script>
 </body>
 </html>
